@@ -66,13 +66,13 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zip=" + zip +
-                ", phoneNumber='" + phoneNum + '\'' +
-                ", email='" + email + '\'' +
+                "\nfirstName='" + firstName + '\'' +
+                ",\nlastName='" + lastName + '\'' +
+                ",\ncity='" + city + '\'' +
+                ",\nstate='" + state + '\'' +
+                ",\nzip=" + zip +
+                ",\nphoneNumber='" + phoneNum + '\'' +
+                ",\nemail='" + email + '\'' +
                 '}';
     }
 }
