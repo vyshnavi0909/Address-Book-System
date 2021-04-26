@@ -7,7 +7,7 @@ public class AddressBookSystem {
     private static List<Person> personList = new ArrayList<>();
 
     public static void main(String[] args) {
-        System.out.println("Welcome to New Address Book");
+        System.out.println("Welcome to Address Book System");
         boolean isExit = false;
         while (!isExit) {
             System.out.println("1. Adding\n2. Editing\n3. Delete\n4. Exit");
