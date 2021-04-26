@@ -10,7 +10,7 @@ public class AddressBookSystem {
         System.out.println("Welcome to New Address Book");
         boolean isExit = false;
         while (!isExit) {
-            System.out.println("1. Adding\n2. Editing\n3. Exit");
+            System.out.println("1. Adding\n2. Editing\n3. Delete\n4. Exit");
             int choice = scan.nextInt();
             switch (choice) {
                 case 1:
@@ -30,6 +30,17 @@ public class AddressBookSystem {
                     Person person = findPerson(getName());
                     if (person != null) {
                         editPerson(person);
+                    }
+                    System.out.println(personList.toString());
+                    break;
+                case 3:
+                    System.out.println("Please enter name to Delete");
+                    for(Person p:personList){
+                        System.out.println(p.getFirstName());
+                    }
+                    Person person1 = findPerson(getName());
+                    if (person1 != null) {
+                        personList.remove(person1);
                     }
                     System.out.println(personList.toString());
                     break;
