@@ -9,8 +9,8 @@ public class AddressBookSystem {
     public void curdPerson() {
         System.out.println("Welcome to New Address Book");
 
-        boolean isExit = false;
-        while (!isExit) {
+        boolean isExist = false;
+        while (!isExist) {
             System.out.println("1. Adding\n2. Editing\n3. Delete\n4. Exit");
             int choice = scan.nextInt();
             switch (choice) {
@@ -46,7 +46,7 @@ public class AddressBookSystem {
                     System.out.println(personList.toString());
                     break;
                 default:
-                    isExit = true;
+                    isExist = true;
                     break;
             }
         }
