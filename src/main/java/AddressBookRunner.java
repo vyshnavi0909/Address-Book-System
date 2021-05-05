@@ -43,10 +43,11 @@ public class AddressBookRunner {
                     String cityOrState = scanner.next();
 
                     List<Person> list = AddressBookSystem.searchByCityOrState(cityOrState);
-                    System.out.println("Persons list found by city or state name provided");
-                    for (Person p: list){
-                        System.out.println( p.getFirstName() + " " + p.getLastName() );
-                    }
+                    System.out.println("Number of people with " + cityOrState + " name: " + list.size());
+//                    System.out.println("Persons list found by city or state name provided");
+//                    for (Person p: list){
+//                        System.out.println( p.getFirstName() + " " + p.getLastName() );
+//                    }
                     break;
                 default:
                     isExit = true;
