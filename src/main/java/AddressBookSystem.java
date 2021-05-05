@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AddressBookSystem {
     private static Scanner scan = new Scanner(System.in);
@@ -16,8 +15,10 @@ public class AddressBookSystem {
             switch (choice) {
                 case 1:
                     System.out.println("Enter first name to check for duplicate");
-                    if (!isPersonExist(getName())) {
-                        personList.add(addPerson());
+                    String fName = getName();
+                    //Checking whether person already exists or not. If does not exist, then adding new person
+                    if (!isPersonExist(fName)){
+                        personList.add(addPerson(fName));
                         System.out.println(personList.toString());
                     } else {
                         System.out.println("Already exists");
@@ -41,7 +42,7 @@ public class AddressBookSystem {
                     }
                     Person person1 = findPerson(getName());
                     if (person1 != null) {
-                        personList.remove(person1);
+                        personList.remove(person1); //to delete a person details
                     }
                     System.out.println(personList.toString());
                     break;
@@ -52,11 +53,13 @@ public class AddressBookSystem {
         }
     }
 
+//    method to check person entered is already existing or not
     private static boolean isPersonExist(String name){
         return personList.stream()
                 .anyMatch(p -> p.getFirstName().equals(name) || p.getLastName().equals(name));
     }
 
+//    method to find a person in the personlist
     private static Person findPerson(String name){
         Person person = personList.stream().filter(personElement -> personElement.getFirstName().equals(name) || personElement.getLastName().equals(name)).findFirst().orElse(null);
         if (person == null){
@@ -67,11 +70,13 @@ public class AddressBookSystem {
         }
     }
 
+//    method to take person name from the user
     private static String getName(){
         String name = scan.next();
         return name;
     }
 
+//    method to edit person details
     private static Person editPerson(Person person) {
         System.out.println("What you wanna change\n1. First Name\n2. Last Name\n3. City\n4. State\n5. Zip Code\n6. Phone Number\n7. Email");
         Integer userChoice = scan.nextInt();
@@ -115,11 +120,11 @@ public class AddressBookSystem {
         return person;
     }
 
-    private static Person addPerson() {
+//    method to add person details
+    private static Person addPerson(String name) {
         Person person = new Person();
 
-        System.out.println("Enter First Name:");
-        String fName = scan.next();
+        String fName = name;
         person.setFirstName(fName);
         System.out.println("Enter Last Name:");
         String lName = scan.next();
@@ -140,5 +145,12 @@ public class AddressBookSystem {
         String email = scan.next();
         person.setEmail(email);
         return person;
+    }
+
+//  method to search person by city name or state name
+    public boolean searchByCityOrState(String cityOrState) {
+        return personList.stream()
+                .anyMatch(rotator -> rotator.getCity().equals(cityOrState)
+                        || rotator.getState().equals(cityOrState));
     }
 }
