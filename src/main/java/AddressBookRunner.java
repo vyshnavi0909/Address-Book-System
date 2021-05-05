@@ -4,7 +4,6 @@ import java.util.stream.Collectors;
 public class AddressBookRunner {
     private static Scanner scanner = new Scanner(System.in);
     private static Map<String, AddressBookSystem> addressBookMap = new HashMap<>();
-    private static AddressBookSystem addrBookSys;
 
     public static void main(String[] args) {
         System.out.println("Welcome to New Address Book");
@@ -43,9 +42,11 @@ public class AddressBookRunner {
                     System.out.println("Enter a city or state name to search person");
                     String cityOrState = scanner.next();
 
-                    //to check person with the desired city or state
-                    List<Map.Entry<String, AddressBookSystem>> list = addressBookMap.entrySet().stream().filter(value -> (value.getValue().searchByCityOrState(cityOrState))).collect(Collectors.toList());
-                    System.out.println(list);
+                    List<Person> list = AddressBookSystem.searchByCityOrState(cityOrState);
+                    System.out.println("Persons list found by city or state name provided");
+                    for (Person p: list){
+                        System.out.println( p.getFirstName() + " " + p.getLastName() );
+                    }
                     break;
                 default:
                     isExit = true;

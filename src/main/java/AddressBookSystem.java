@@ -148,9 +148,8 @@ public class AddressBookSystem {
     }
 
 //  method to search person by city name or state name
-    public boolean searchByCityOrState(String cityOrState) {
-        return personList.stream()
-                .anyMatch(rotator -> rotator.getCity().equals(cityOrState)
-                        || rotator.getState().equals(cityOrState));
+    public static List<Person> searchByCityOrState(String cityOrState) {
+        List<Person> newPersonList = personList.stream().filter(person -> person.getCity().equals(cityOrState) | person.getState().equals(cityOrState)).collect(Collectors.toList());
+        return newPersonList;
     }
 }
