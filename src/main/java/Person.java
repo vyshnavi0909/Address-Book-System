@@ -88,7 +88,12 @@ public class Person {
         }
         Person person = (Person) o;
         return  Objects.equals(firstName, person.firstName)
-                && Objects.equals(lastName, person.lastName) ;
+                && Objects.equals(lastName, person.lastName)
+                && Objects.equals(city, person.city)
+                && Objects.equals(state, person.state)
+                && Objects.equals(zip, person.zip)
+                && Objects.equals(phoneNum, person.phoneNum)
+                && Objects.equals(email, person.email);
     }
 
     @Override

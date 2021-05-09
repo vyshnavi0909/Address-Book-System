@@ -4,6 +4,17 @@ import java.util.stream.Collectors;
 public class AddressBookSystem {
     private static Scanner scan = new Scanner(System.in);
     private static List<Person> personList = new ArrayList<>();
+    private static Map<String, AddressBookSystem> addressBookMap = new HashMap<>();
+
+
+    public List<Person> getPersonList() {
+        return personList;
+    }
+
+    public void setPersonList(List<Person> personList) {
+        AddressBookSystem addressBookSystem = new AddressBookSystem();
+        addressBookSystem.personList = personList;
+    }
 
     public void curdPerson() {
         System.out.println("Welcome to New Address Book");
@@ -14,7 +25,7 @@ public class AddressBookSystem {
             int choice = scan.nextInt();
             switch (choice) {
                 case 1:
-                    System.out.println("Enter first name to check for duplicate");
+                    System.out.println("Enter first name");
                     String fName = getName();
                     //Checking whether person already exists or not. If does not exist, then adding new person
                     if (!isPersonExist(fName)){
@@ -54,13 +65,13 @@ public class AddressBookSystem {
     }
 
 //    method to check person entered is already existing or not
-    private static boolean isPersonExist(String name){
+    private boolean isPersonExist(String name){
         return personList.stream()
                 .anyMatch(p -> p.getFirstName().equals(name) || p.getLastName().equals(name));
     }
 
-//    method to find a person in the personlist
-    private static Person findPerson(String name){
+//    method to find a person in the person list
+    private Person findPerson(String name){
         Person person = personList.stream().filter(personElement -> personElement.getFirstName().equals(name) || personElement.getLastName().equals(name)).findFirst().orElse(null);
         if (person == null){
             System.out.println("Not matched");
@@ -147,9 +158,28 @@ public class AddressBookSystem {
         return person;
     }
 
-//  method to search person by city name or state name
-    public static List<Person> searchByCityOrState(String cityOrState) {
-        List<Person> newPersonList = personList.stream().filter(person -> person.getCity().equals(cityOrState) | person.getState().equals(cityOrState)).collect(Collectors.toList());
+    /**
+     *
+     * @param cityOrState
+     * @return
+     */
+    public List<Person> searchByCityOrState(String cityOrState) {
+        System.out.println(personList.size());
+        for (Person p : personList){
+            System.out.println(p.getCity() +" " + p.getState());
+        }
+        List<Person> newPersonList = personList.stream().filter(personElement -> personElement.getCity().equals(cityOrState) | personElement.getState().equals(cityOrState)).collect(Collectors.toList());
         return newPersonList;
     }
+
+    /**
+     *
+     */
+    public void sortByName(){
+        List<Person> list = personList.stream().sorted(Comparator.comparing(person -> person.getFirstName())).collect(Collectors.toList());
+        for (Person person : list ){
+            System.out.println(person.toString());
+        }
+    }
+
 }
