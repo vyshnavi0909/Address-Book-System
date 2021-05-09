@@ -14,7 +14,7 @@ public class AddressBookRunner {
 
         boolean isExit = false;
         while (!isExit) {
-            System.out.println("1. Add book\n2. Add to existing book\n3. Search a person by city or state name\n4. Sort by options\n5. Write into a file\n6. Read from file\n7. Write to CSV file\n8. Read from CSV file\n9. Exit");
+            System.out.println("1. Add book\n2. Add to existing book\n3. Search a person by city or state name\n4. Sort by options\n5. Write into a file\n6. Read from file\n7. Write to CSV file\n8. Read from CSV file\n9. Write to JSON file\n10. Read from JSON file\n11. Exit");
             int choice = scanner.nextInt();
             switch (choice){
                 case 1:
@@ -81,12 +81,20 @@ public class AddressBookRunner {
                     AddressBookSystem.readDataFromFile();
                     break;
                 case 7:
-                    System.out.println("Writing data into CSV file");
+                    System.out.println("Writing data to CSV file");
                     AddressBookSystem.writeDataToCSVFile();
                     break;
                 case 8:
                     System.out.println("Reading Data from CSV file");
                     AddressBookSystem.readDataFromCSVFile();
+                    break;
+                case 9:
+                    System.out.println("Writing data to JSON file");
+                    AddressBookSystem.writeDataToJSon();
+                    break;
+                case 10:
+                    System.out.println("Read data from JSON file");
+                    AddressBookSystem.readDataFromJson();
                     break;
                 default:
                     isExit = true;

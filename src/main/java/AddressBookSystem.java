@@ -1,8 +1,6 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,6 +11,8 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
+import com.google.gson.Gson;
 
 
 public class AddressBookSystem {
@@ -266,12 +266,12 @@ public class AddressBookSystem {
      * @throws CsvRequiredFieldEmptyException
      * @throws CsvDataTypeMismatchException
      */
-    public static void writeDataToCSVFile() throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+    public static void writeDataToCSVFile() {
         try (Writer writer = Files.newBufferedWriter(Paths.get("Contacts.csv"));) {
             StatefulBeanToCsvBuilder<Person> builder = new StatefulBeanToCsvBuilder<>(writer);
             StatefulBeanToCsv<Person> beanWriter = builder.build();
             beanWriter.write(personList);
-        } catch (IOException e) {
+        } catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
             e.printStackTrace();
         }
     }
@@ -299,4 +299,36 @@ public class AddressBookSystem {
         }
     }
 
+    public static void writeDataToJSon() {
+        try{
+            Path filePath = Paths.get("Contacts.json");
+            Gson gson = new Gson();
+            String json = gson.toJson(personList);
+            FileWriter writer = new FileWriter(String.valueOf(filePath));
+            writer.write(json);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void readDataFromJson() {
+        ArrayList<Person> newPersonList = null;
+        Path filePath = Paths.get("Contacts.json");
+        try (Reader reader = Files.newBufferedReader(filePath);) {
+            Gson gson = new Gson();
+            newPersonList = new ArrayList<>(Arrays.asList(gson.fromJson(reader, Person[].class)));
+            for (Person contact : newPersonList) {
+                System.out.println("Firstname : " + contact.getFirstName());
+                System.out.println("Lastname : " + contact.getLastName());
+                System.out.println("City : " + contact.getCity());
+                System.out.println("State : " + contact.getState());
+                System.out.println("Zip Code : " + contact.getZip());
+                System.out.println("Phone number : " + contact.getPhoneNum());
+                System.out.println("Email : " + contact.getEmail());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
