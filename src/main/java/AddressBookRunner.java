@@ -12,7 +12,7 @@ public class AddressBookRunner {
 
         boolean isExit = false;
         while (!isExit) {
-            System.out.println("1. Add book\n2. Add to existing book\n3. Search a person by city or state name\n4. Sort entries by name\n5. Exit");
+            System.out.println("1. Add book\n2. Add to existing book\n3. Search a person by city or state name\n4. Sort contacts by name\n5. Sort contacts by city\n6. Sort contacts by state\n7. Sort contacts by zip\n8. Exit");
             int choice = scanner.nextInt();
             switch (choice){
                 case 1:
@@ -40,7 +40,6 @@ public class AddressBookRunner {
 
                     AddressBookSystem addressBookSystem1 = new AddressBookSystem();
                     List<Person> list = addressBookSystem1.searchByCityOrState(cityOrState);
-                    System.out.println("Number of people with " + cityOrState + ": " + list.size());
                     System.out.println("Persons list found by city or state name provided");
                     for (Person p: list){
                         System.out.println( p.getFirstName() + " " + p.getLastName() );
@@ -50,6 +49,18 @@ public class AddressBookRunner {
 
                     System.out.println("Sorting by name");
                     addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByName());
+                    break;
+                case 5:
+                    System.out.println("Sorting by ctiy");
+                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByCity());
+                    break;
+                case 6:
+                    System.out.println("Sorting by state");
+                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByState());
+                    break;
+                case 7:
+                    System.out.println("Sorting by zip");
+                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByZip());
                     break;
                 default:
                     isExit = true;

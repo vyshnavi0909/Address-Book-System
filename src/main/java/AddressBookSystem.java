@@ -164,10 +164,6 @@ public class AddressBookSystem {
      * @return
      */
     public List<Person> searchByCityOrState(String cityOrState) {
-        System.out.println(personList.size());
-        for (Person p : personList){
-            System.out.println(p.getCity() +" " + p.getState());
-        }
         List<Person> newPersonList = personList.stream().filter(personElement -> personElement.getCity().equals(cityOrState) | personElement.getState().equals(cityOrState)).collect(Collectors.toList());
         return newPersonList;
     }
@@ -182,4 +178,24 @@ public class AddressBookSystem {
         }
     }
 
+    public void sortByCity() {
+        List<Person> list = personList.stream().sorted(Comparator.comparing(person -> person.getCity())).collect(Collectors.toList());
+        for (Person person : list ){
+            System.out.println(person.toString());
+        }
+    }
+
+    public void sortByState() {
+        List<Person> list = personList.stream().sorted(Comparator.comparing(person -> person.getState())).collect(Collectors.toList());
+        for (Person person : list ){
+            System.out.println(person.toString());
+        }
+    }
+
+    public void sortByZip() {
+        List<Person> list = personList.stream().sorted(Comparator.comparing(person -> person.getZip())).collect(Collectors.toList());
+        for (Person person : list ){
+            System.out.println(person.toString());
+        }
+    }
 }
