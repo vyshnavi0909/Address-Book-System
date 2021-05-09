@@ -1,27 +1,30 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
+
 public class AddressBookSystem {
-    public static String PAYROLL_FILE_NAME = "Contacts-file.txt";
+    public static String CONTACTS_FILE_NAME = "Contacts-file.txt";
 
     private static Scanner scan = new Scanner(System.in);
     private static List<Person> personList = new ArrayList<>();
     private static Map<String, AddressBookSystem> addressBookMap = new HashMap<>();
 
-
-    public List<Person> getPersonList() {
-        return personList;
-    }
-
-    public void setPersonList(List<Person> personList) {
-        AddressBookSystem addressBookSystem = new AddressBookSystem();
-        addressBookSystem.personList = personList;
-    }
-
+    /**
+     * method to execute options
+     */
     public void curdPerson() {
         System.out.println("Welcome to New Address Book");
 
@@ -70,13 +73,21 @@ public class AddressBookSystem {
         }
     }
 
-//    method to check person entered is already existing or not
+    /**
+     * method to check person entered is already existing or not
+     * @param name
+     * @return
+     */
     private boolean isPersonExist(String name){
         return personList.stream()
                 .anyMatch(p -> p.getFirstName().equals(name) || p.getLastName().equals(name));
     }
 
-//    method to find a person in the person list
+    /**
+     * method to find a person in the person list
+     * @param name
+     * @return
+     */
     private Person findPerson(String name){
         Person person = personList.stream().filter(personElement -> personElement.getFirstName().equals(name) || personElement.getLastName().equals(name)).findFirst().orElse(null);
         if (person == null){
@@ -87,13 +98,20 @@ public class AddressBookSystem {
         }
     }
 
-//    method to take person name from the user
+    /**
+     * method to take person name from the user
+     * @return
+     */
     private static String getName(){
         String name = scan.next();
         return name;
     }
 
-//    method to edit person details
+    /**
+     * method to edit person details
+     * @param person
+     * @return
+     */
     private static Person editPerson(Person person) {
         System.out.println("What you wanna change\n1. First Name\n2. Last Name\n3. City\n4. State\n5. Zip Code\n6. Phone Number\n7. Email");
         Integer userChoice = scan.nextInt();
@@ -216,6 +234,9 @@ public class AddressBookSystem {
         }
     }
 
+    /**
+     * method to write data to file
+     */
     public static void writeDataToFile(){
         StringBuffer stringBuffer = new StringBuffer();
         personList.forEach(person -> {
@@ -223,18 +244,59 @@ public class AddressBookSystem {
             stringBuffer.append(string);
         });
         try {
-            Files.write(Paths.get(PAYROLL_FILE_NAME), stringBuffer.toString().getBytes());
+            Files.write(Paths.get(CONTACTS_FILE_NAME), stringBuffer.toString().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void readDataFromFile(){
-//        List<Person> personList = new ArrayList<>();
+    /**
+     * method to read data from file
+     */
+    public static void readDataFromFile() {
         try {
-            Files.lines(new File(PAYROLL_FILE_NAME).toPath()).map(line -> line.trim()).forEach(line -> System.out.println(line));
+            Files.lines(new File(CONTACTS_FILE_NAME).toPath()).map(line -> line.trim()).forEach(line -> System.out.println(line));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * method to write data to CSV file
+     * @throws CsvRequiredFieldEmptyException
+     * @throws CsvDataTypeMismatchException
+     */
+    public static void writeDataToCSVFile() throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+        try (Writer writer = Files.newBufferedWriter(Paths.get("Contacts.csv"));) {
+            StatefulBeanToCsvBuilder<Person> builder = new StatefulBeanToCsvBuilder<>(writer);
+            StatefulBeanToCsv<Person> beanWriter = builder.build();
+            beanWriter.write(personList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * method to read data from CSV file
+     */
+    public static void readDataFromCSVFile() {
+        try (Reader reader = Files.newBufferedReader(Paths.get("Contacts.csv"));
+             CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();){
+            String[] nextRecord;
+            while ((nextRecord = csvReader.readNext()) != null) {
+                System.out.println("{");
+                System.out.println("First Name = " + nextRecord[2]);
+                System.out.println("Last Name = " + nextRecord[3]);
+                System.out.println("City = " + nextRecord[0]);
+                System.out.println("State = " + nextRecord[5]);
+                System.out.println("Zip = " + nextRecord[6]);
+                System.out.println("Phone Number = " + nextRecord[4]);
+                System.out.println("Email = " + nextRecord[1]);
+                System.out.println("}");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

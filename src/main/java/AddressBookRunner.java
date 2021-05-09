@@ -1,3 +1,6 @@
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
 import java.util.*;
 
 public class AddressBookRunner {
@@ -6,13 +9,12 @@ public class AddressBookRunner {
     private List<Person> personList = new ArrayList<>();
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         System.out.println("Welcome to New Address Book");
-
 
         boolean isExit = false;
         while (!isExit) {
-            System.out.println("1. Add book\n2. Add to existing book\n3. Search a person by city or state name\n4. Sort contacts by name\n5. Sort contacts by city\n6. Sort contacts by state\n7. Sort contacts by zip\n8. Write into a file\n9. Read from file\n10. Exit");
+            System.out.println("1. Add book\n2. Add to existing book\n3. Search a person by city or state name\n4. Sort by options\n5. Write into a file\n6. Read from file\n7. Write to CSV file\n8. Read from CSV file\n9. Exit");
             int choice = scanner.nextInt();
             switch (choice){
                 case 1:
@@ -46,29 +48,45 @@ public class AddressBookRunner {
                     }
                     break;
                 case 4:
-
-                    System.out.println("Sorting by name");
-                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByName());
+                    System.out.println("Sort by options\n1. By name\n2. By city\n3. By state\n4. By zip");
+                    int option = scanner.nextInt();
+                    switch (option){
+                        case 1:
+                            System.out.println("Sorting by name");
+                            addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByName());
+                            break;
+                        case 2:
+                            System.out.println("Sorting by city");
+                            addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByCity());
+                            break;
+                        case 3:
+                            System.out.println("Sorting by state");
+                            addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByState());
+                            break;
+                        case 4:
+                            System.out.println("Sorting by zip");
+                            addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByZip());
+                            break;
+                        default:
+                            System.out.println("invalid option");
+                            break;
+                    }
                     break;
                 case 5:
-                    System.out.println("Sorting by ctiy");
-                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByCity());
-                    break;
-                case 6:
-                    System.out.println("Sorting by state");
-                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByState());
-                    break;
-                case 7:
-                    System.out.println("Sorting by zip");
-                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByZip());
-                    break;
-                case 8:
                     System.out.println("Writing into file");
                     AddressBookSystem.writeDataToFile();
                     break;
-                case 9:
+                case 6:
                     System.out.println("Reading data from file ");
                     AddressBookSystem.readDataFromFile();
+                    break;
+                case 7:
+                    System.out.println("Writing data into CSV file");
+                    AddressBookSystem.writeDataToCSVFile();
+                    break;
+                case 8:
+                    System.out.println("Reading Data from CSV file");
+                    AddressBookSystem.readDataFromCSVFile();
                     break;
                 default:
                     isExit = true;
