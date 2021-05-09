@@ -12,7 +12,7 @@ public class AddressBookRunner {
 
         boolean isExit = false;
         while (!isExit) {
-            System.out.println("1. Add book\n2. Add to existing book\n3. Search a person by city or state name\n4. Sort contacts by name\n5. Sort contacts by city\n6. Sort contacts by state\n7. Sort contacts by zip\n8. Exit");
+            System.out.println("1. Add book\n2. Add to existing book\n3. Search a person by city or state name\n4. Sort contacts by name\n5. Sort contacts by city\n6. Sort contacts by state\n7. Sort contacts by zip\n8. Write into a file\n9. Read from file\n10. Exit");
             int choice = scanner.nextInt();
             switch (choice){
                 case 1:
@@ -61,6 +61,14 @@ public class AddressBookRunner {
                 case 7:
                     System.out.println("Sorting by zip");
                     addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByZip());
+                    break;
+                case 8:
+                    System.out.println("Writing into file");
+                    AddressBookSystem.writeDataToFile();
+                    break;
+                case 9:
+                    System.out.println("Reading data from file ");
+                    AddressBookSystem.readDataFromFile();
                     break;
                 default:
                     isExit = true;

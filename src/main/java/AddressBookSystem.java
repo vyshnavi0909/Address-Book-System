@@ -1,7 +1,13 @@
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class AddressBookSystem {
+    public static String PAYROLL_FILE_NAME = "Contacts-file.txt";
+
     private static Scanner scan = new Scanner(System.in);
     private static List<Person> personList = new ArrayList<>();
     private static Map<String, AddressBookSystem> addressBookMap = new HashMap<>();
@@ -131,7 +137,9 @@ public class AddressBookSystem {
         return person;
     }
 
-//    method to add person details
+    /**
+     * method to add person details
+     */
     private static Person addPerson(String name) {
         Person person = new Person();
 
@@ -169,7 +177,7 @@ public class AddressBookSystem {
     }
 
     /**
-     *
+     *method to sort contacts by first name
      */
     public void sortByName(){
         List<Person> list = personList.stream().sorted(Comparator.comparing(person -> person.getFirstName())).collect(Collectors.toList());
@@ -178,6 +186,9 @@ public class AddressBookSystem {
         }
     }
 
+    /**
+     * method to sort contacts by city names
+     */
     public void sortByCity() {
         List<Person> list = personList.stream().sorted(Comparator.comparing(person -> person.getCity())).collect(Collectors.toList());
         for (Person person : list ){
@@ -185,6 +196,9 @@ public class AddressBookSystem {
         }
     }
 
+    /**
+     * method to sort contacts by state
+     */
     public void sortByState() {
         List<Person> list = personList.stream().sorted(Comparator.comparing(person -> person.getState())).collect(Collectors.toList());
         for (Person person : list ){
@@ -192,10 +206,35 @@ public class AddressBookSystem {
         }
     }
 
+    /**
+     * method to sort my contacts by zip
+     */
     public void sortByZip() {
         List<Person> list = personList.stream().sorted(Comparator.comparing(person -> person.getZip())).collect(Collectors.toList());
         for (Person person : list ){
             System.out.println(person.toString());
+        }
+    }
+
+    public static void writeDataToFile(){
+        StringBuffer stringBuffer = new StringBuffer();
+        personList.forEach(person -> {
+            String string = person.toString().concat("\n");
+            stringBuffer.append(string);
+        });
+        try {
+            Files.write(Paths.get(PAYROLL_FILE_NAME), stringBuffer.toString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void readDataFromFile(){
+//        List<Person> personList = new ArrayList<>();
+        try {
+            Files.lines(new File(PAYROLL_FILE_NAME).toPath()).map(line -> line.trim()).forEach(line -> System.out.println(line));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
