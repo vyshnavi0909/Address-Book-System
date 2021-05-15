@@ -299,6 +299,9 @@ public class AddressBookSystem {
         }
     }
 
+    /**
+     * method to write data to JSON file
+     */
     public static void writeDataToJSon() {
         try{
             Path filePath = Paths.get("Contacts.json");
@@ -312,6 +315,9 @@ public class AddressBookSystem {
         }
     }
 
+    /**
+     * method to read from JSON file
+     */
     public static void readDataFromJson() {
         ArrayList<Person> newPersonList = null;
         Path filePath = Paths.get("Contacts.json");
