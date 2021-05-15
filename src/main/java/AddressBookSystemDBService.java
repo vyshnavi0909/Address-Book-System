@@ -15,9 +15,31 @@ public class AddressBookSystemDBService {
             preparedStatement.setString(2, "Telangana");
             preparedStatement.setString(3, "sai");
             int rowsAffected = preparedStatement.executeUpdate();
-            System.out.println("Numbers of rows affected: " + rowsAffected);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM contacts");
+            statement.executeUpdate("ALTER TABLE contacts ADD date_added date;");
+            PreparedStatement preparedStatement1 = connection.prepareStatement("UPDATE contacts SET date_added=? WHERE first_name=?");
+            preparedStatement1.setString(1,"2016-01-02");
+            preparedStatement1.setString(2, "Sundeep");
+            preparedStatement1.executeUpdate();
+            preparedStatement1.setString(1, "2019-02-01");
+            preparedStatement1.setString(2, "Akshar");
+            preparedStatement1.executeUpdate();
+            preparedStatement1.setString(1, "2018-09-05");
+            preparedStatement1.setString(2, "Roshini");
+            preparedStatement1.executeUpdate();
+            preparedStatement1.setString(1,"2019-08-06");
+            preparedStatement1.setString(2, "Vyshnavi");
+            preparedStatement1.executeUpdate();
+            preparedStatement1.setString(1, "2015-03-08");
+            preparedStatement1.setString(2, "Sai");
+            preparedStatement1.executeUpdate();
+            preparedStatement1.setString(1, "2016-02-05");
+            preparedStatement1.setString(2, "Preethi");
+            preparedStatement1.executeUpdate();
+
+            Statement statement1 = connection.createStatement();
+            Statement statement2 = connection.createStatement();
+            ResultSet resultSet = statement2.executeQuery("SELECT * FROM contacts WHERE date_added BETWEEN CAST('2017-01-01' AS DATE) AND DATE(NOW());");
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 
             while (resultSet.next()) {
