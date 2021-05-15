@@ -10,8 +10,14 @@ public class AddressBookSystemDBService {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE contacts SET city=?, state=? WHERE first_name=?;");
+            preparedStatement.setString(1, "Hyderabad");
+            preparedStatement.setString(2, "Telangana");
+            preparedStatement.setString(3, "sai");
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Numbers of rows affected: " + rowsAffected);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM contacts;");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM contacts");
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 
             while (resultSet.next()) {
